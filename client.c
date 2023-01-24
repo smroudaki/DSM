@@ -26,8 +26,8 @@ void read_page(int remote_server_sock){
 	if (x > 0){
 		mmapped_addr = (char *) y;
 	}
-
-	if (read(remote_server_sock, &len, sizeof(len)) < 0){
+	int temp=read(remote_server_sock, &len, sizeof(len));
+	if (temp<0){
                 printf("len read failed\n");
         } 
      

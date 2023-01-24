@@ -3,11 +3,12 @@
 #include <arpa/inet.h>
 #include "server.c"
 #include "client.c"
+#include "stdbool.h"
 
 #include <sys/socket.h> 
 
 int main(int argc, char const *argv[]){
-    int local_port_number, remote_port_number, num_pages, page_size, len, x;
+    int local_port_number, remote_port_number, num_pages, page_size, len, x,npg;
 	int remote_server_sock = 0, local_server_sock = 0, new_socket = 0, option = 1;
 	struct sockaddr_in self_address, serv_addr;
 	int addrlen = sizeof(self_address);
@@ -35,10 +36,11 @@ int main(int argc, char const *argv[]){
 		exit(EXIT_FAILURE);
 	}
 
-	if (connect(remote_server_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+	int te=connect(remote_server_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+	if ( te< 0) {
 		printf("\nConnection Failed \n");
 
-		if ((local_server_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+	if ((local_server_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 			printf("\n Socket creation error \n");
 			exit(EXIT_FAILURE);
 		}
@@ -61,20 +63,18 @@ int main(int argc, char const *argv[]){
 	                exit(EXIT_FAILURE);
         	}
 
-
         	if (listen(local_server_sock, 3) < 0) {
                 	perror("listen");
 	                exit(EXIT_FAILURE);
         	}
-
-        	if ((new_socket = accept(local_server_sock, (struct sockaddr *)&self_address,(socklen_t*)&addrlen)) < 0) {
+			new_socket = accept(local_server_sock, (struct sockaddr *)&self_address,(socklen_t*)&addrlen);
+        	if ((new_socket) < 0) {
                 	perror("accept");
 	                exit(EXIT_FAILURE);
         	}
         int npg=req_page();
         send_page(npg,new_socket);
-        
+
     }
-    read_page(remote_server_sock);
-    
+	read_page(remote_server_sock);
 }

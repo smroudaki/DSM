@@ -46,7 +46,7 @@ void send_page(int num_pages,int new_socket){
 					mmapped_addr, len);
 
 		y = (unsigned long) mmapped_addr;
-
+		
 		send (new_socket, &y, sizeof(y), 0);
 		//printf("Mapped address pointer sent to client\n");
 
@@ -54,30 +54,30 @@ void send_page(int num_pages,int new_socket){
 		//printf("Mapped size sent to client\n");
 }
 
-lock_memory(char   *addr,
-            size_t  size)
-{
-  unsigned long    page_offset, page_size;
+// lock_memory(char   *addr,
+//             size_t  size)
+// {
+//   unsigned long    page_offset, page_size;
 
-  page_size = sysconf(_SC_PAGE_SIZE);
-  page_offset = (unsigned long) addr % page_size;
+//   page_size = sysconf(_SC_PAGE_SIZE);
+//   page_offset = (unsigned long) addr % page_size;
 
-  addr -= page_offset;  /* Adjust addr to page boundary */
-  size += page_offset;  /* Adjust size with page_offset */
+//   addr -= page_offset;  /* Adjust addr to page boundary */
+//   size += page_offset;  /* Adjust size with page_offset */
 
-  return ( mlock(addr, size) );  /* Lock the memory */
-}
+//   return ( mlock(addr, size) );  /* Lock the memory */
+// }
 
-unlock_memory(char   *addr,
-              size_t  size)
-{
-  unsigned long    page_offset, page_size;
+// unlock_memory(char   *addr,
+//               size_t  size)
+// {
+//   unsigned long    page_offset, page_size;
 
-  page_size = sysconf(_SC_PAGE_SIZE);
-  page_offset = (unsigned long) addr % page_size;
+//   page_size = sysconf(_SC_PAGE_SIZE);
+//   page_offset = (unsigned long) addr % page_size;
 
-  addr -= page_offset;  /* Adjust addr to page boundary */
-  size += page_offset;  /* Adjust size with page_offset */
+//   addr -= page_offset;  /* Adjust addr to page boundary */
+//   size += page_offset;  /* Adjust size with page_offset */
 
-  return ( munlock(addr, size) );  /* Unlock the memory */
-}
+//   return ( munlock(addr, size) );  /* Unlock the memory */
+// }
